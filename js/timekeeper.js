@@ -24,10 +24,12 @@ THE SOFTWARE.
 
 $(function(){
 	var loadedcss = '';
-	$('#time1').val('15:00');
-	$('#time2').val('20:00');
-	$('#time3').val('25:00');
-	$('#info').html("Click to edit this message.");
+	$('#time1').val('7:00');
+	$('#time2').val('10:00');
+	$('#time3').val('15:00');
+	$('#info').html("");
+	$('#talkid').val('1');
+
 	function getHashParams() {
     var hashParams = {};
     var e,
@@ -49,6 +51,7 @@ $(function(){
 		if(params.t2 !== undefined) $('#time2').val(params.t2);
 		if(params.t3 !== undefined) $('#time3').val(params.t3);
 		if(params.m !== undefined) $('#info').html(params.m);
+		if(params.tid !== undefined) $('#talkid').val(params.tid);
 		if(loadedcss !== ''){
 			location.reload();
 		}
@@ -64,7 +67,8 @@ $(function(){
     var hashstr = '#t1=' + $('#time1').val()
 		+ '&t2=' + $('#time2').val()
 		+ '&t3=' + $('#time3').val()
-		+ '&m=' + encodeURIComponent($('#info').html());
+		+ '&m=' + encodeURIComponent($('#info').html())
+		+ '&tid=' +$('#talkid').val();
 		if(loadedcss !== 'default'){
 			hashstr = hashstr + '&th=' + encodeURIComponent(loadedcss);
 		}
@@ -83,7 +87,7 @@ $(function(){
 	parseHashParams();
 	updateHash();
 
-	$('#time1,#time2,#time3,#info').change(function(){
+	$('#time1,#time2,#time3,#info,#talkid').change(function(){
 		updateHash();
 	});
 
@@ -118,7 +122,8 @@ $(function(){
 		event.preventDefault();
 		$('.nav li').removeClass('active');
 		$('.nav li#standby').addClass('active');
-		$('#state').html('STANDBY');
+		var lstr = 'STANDBY 講演番号 ' + $('#talkid').val()
+    $('#state').html(lstr);		
 		changeStateClass('standby');
 		changePhaseClass('0');
 		time_inner=(new Date('2011/1/1 00:00:00'));
@@ -135,7 +140,8 @@ $(function(){
 		}
 		$('.nav li').removeClass('active');
 		$('.nav li#start').addClass('active');
-		$('#state').html('');
+		var lstr = '講演番号 ' + $('#talkid').val()
+    $('#state').html(lstr);		
 		changeStateClass('start');
 		start_time = new Date((new Date()).getTime() - (time_inner-(new Date('2011/1/1 00:00:00'))));
 		last_time = null;
@@ -153,7 +159,8 @@ $(function(){
 		$('.nav li').removeClass('active');
 		$('.nav li#pause').addClass('active');
 		update_time();
-		$('#state').html('PAUSED');
+		var lstr = 'PAUSED 講演番号 ' + $('#talkid').val()
+    $('#state').html(lstr);
 		changeStateClass('paused');
 	});
 
@@ -164,7 +171,7 @@ $(function(){
 		$('#time').css('top',(height-theight)/2*1.1);
 		$('#time').css('font-size',theight+'px');
 		$('#time').css('line-height',theight+'px');
-		var sheight=theight/6;
+		var sheight=theight/3;
 		$('#state').css('top',height/2-theight/2-sheight/2);
 		$('#state').css('font-size',sheight+'px');
 		$('#state').css('line-height',sheight+'px');
@@ -181,6 +188,20 @@ $(function(){
 		audio_chime1.currentTime = 0;
 		audio_chime1.play();
 	});
+	
+	$('#decrement').click(function(){
+		event.preventDefault();
+    var curid = eval($('#talkid').val());
+		$('#talkid').val(curid-1);
+		updateHash();
+  });
+
+  $('#increment').click(function (){
+		event.preventDefault();
+    var curid = eval($('#talkid').val());
+		$('#talkid').val(curid+1);
+		updateHash();
+  });
 
 	function show_time(){
 		var time_str= ('00' +  time_inner.getMinutes()   ).slice(-2) + ':'
