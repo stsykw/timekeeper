@@ -191,7 +191,7 @@ $(function(){
 	
 	$('#decrement').click(function(){
 		event.preventDefault();
-    var curid = eval($('#talkid').val());
+		var curid = eval($('#talkid').val());
 		$('#talkid').val(curid-1);
 		updateHash();
   });

@@ -1,3 +1,12 @@
+# 物理学会向け
+
+物理学会向けに講演番号表示をつけました。デフォルト時間も物理学会に合わせています。
+タイマー画面が座長のカメラに写り込むようにすれば時間管理が楽になると思います。
+
+阪大理 湯川諭
+
+以下、オリジナルのREADMEです。
+
 # Time Keeper
 HTML5 and JavaScript based timer with notification chime for academic conference.
 
